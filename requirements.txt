@@ -1,0 +1,4 @@
+paho-mqtt<2.0.0
+pandas
+paramiko
+neo4j
