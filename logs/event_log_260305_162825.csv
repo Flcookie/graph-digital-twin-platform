@@ -1,0 +1,4 @@
+timestamp,station_id,part_id,part_type,activity
+1,S1,P1,part,START
+2,S2,P1,part,PROCESS
+3,S3,P1,part,END

@@ -43,7 +43,8 @@ def write_event_to_graph(event: dict):
 def _create_event_tx(tx, event_id, event):
     query = """
     MERGE (e:Event {id: $event_id})
-    SET e.timestamp = $timestamp
+    SET e.timestamp = $timestamp,
+        e.label = $activity + "@" + toString($timestamp)
 
     MERGE (s:Station {sysId: $station_id})
     MERGE (en:Entity {sysId: $part_id})
