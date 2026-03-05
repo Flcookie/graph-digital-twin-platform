@@ -9,7 +9,7 @@ with open(CSV_PATH, newline="", encoding="utf-8") as f:
     # CSV rows must be sorted by time already (or sort before importing)
     for row in reader:
         event = {
-            "time": float(row["time"]),
+            "timestamp": float(row["timestamp"]),
             "station_id": row["station_id"],
             "part_id": row["part_id"],
             "part_type": row["part_type"],

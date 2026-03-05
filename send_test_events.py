@@ -3,37 +3,40 @@ import time
 import paho.mqtt.client as mqtt
 
 client = mqtt.Client()
-client.connect("localhost",1883)
+
+client.connect("localhost", 1883)
 
 events = [
     {
-        "time":1,
-        "station_id":"S1",
-        "part_id":"P1",
-        "part_type":"part",
-        "activity":"START"
+        "timestamp": 1,
+        "station_id": "S1",
+        "part_id": "P1",
+        "part_type": "part",
+        "activity": "START"
     },
     {
-        "time":2,
-        "station_id":"S2",
-        "part_id":"P1",
-        "part_type":"part",
-        "activity":"PROCESS"
+        "timestamp": 2,
+        "station_id": "S2",
+        "part_id": "P1",
+        "part_type": "part",
+        "activity": "PROCESS"
     },
     {
-        "time":3,
-        "station_id":"S3",
-        "part_id":"P1",
-        "part_type":"part",
-        "activity":"END"
+        "timestamp": 3,
+        "station_id": "S3",
+        "part_id": "P1",
+        "part_type": "part",
+        "activity": "END"
     }
 ]
 
 for e in events:
+
     client.publish(
         "component_event/test/all",
         json.dumps(e)
     )
+
     time.sleep(1)
 
 print("Events sent")

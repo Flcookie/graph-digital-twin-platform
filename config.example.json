@@ -7,5 +7,5 @@
     "mqtt_broker_host": "localhost",
     "mqtt_broker_port": 1883,
     "log_folder": "logs",
-    "log_columns": ["time", "station_id", "part_id", "part_type", "activity"]
+    "log_columns": ["timestamp", "station_id", "part_id", "part_type", "activity"]
 }

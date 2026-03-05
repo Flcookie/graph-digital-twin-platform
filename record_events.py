@@ -48,7 +48,7 @@ except KeyboardInterrupt:
 
     # Save CSV backup
     event_log = pandas.DataFrame.from_records(event_list, columns=LOG_COLUMNS)
-    event_log.sort_values(by="time", inplace=True, kind="stable")
+    event_log.sort_values(by="timestamp", inplace=True, kind="stable")
     os.makedirs(LOG_FOLDER, exist_ok=True)
     event_log.to_csv(LOG_PATH, index=False)
     print("Event log saved to " + LOG_PATH)

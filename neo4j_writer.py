@@ -20,7 +20,7 @@ def write_event_to_graph(event: dict):
     Write one event into the Neo4j knowledge graph.
 
     Required fields in event:
-        time        - timestamp (float or int)
+        timestamp        - timestamp (float or int)
         station_id  - e.g. "S1"
         part_id     - e.g. "P1"
         part_type   - e.g. "part"
@@ -43,7 +43,7 @@ def write_event_to_graph(event: dict):
 def _create_event_tx(tx, event_id, event):
     query = """
     MERGE (e:Event {id: $event_id})
-    SET e.time = $time
+    SET e.timestamp = $timestamp
 
     MERGE (s:Station {sysId: $station_id})
     MERGE (en:Entity {sysId: $part_id})
@@ -58,7 +58,7 @@ def _create_event_tx(tx, event_id, event):
     tx.run(
         query,
         event_id=event_id,
-        time=event["time"],
+        timestamp=event["timestamp"],
         station_id=event["station_id"],
         part_id=event["part_id"],
         part_type=event["part_type"],
