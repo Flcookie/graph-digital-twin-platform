@@ -2,7 +2,6 @@ from neo4j import GraphDatabase
 import uuid
 import json
 
-# Load Neo4j config from config.json
 with open("config.json", encoding="utf-8") as f:
     _config = json.load(f)
 
@@ -13,8 +12,6 @@ NEO4J_PASSWORD = _neo4j_cfg["password"]
 
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
-# Track last event per part (for correct DF relationship)
-# Key: part_id, Value: event_id of the last event for that part
 _last_event_per_part: dict[str, str] = {}
 
 
