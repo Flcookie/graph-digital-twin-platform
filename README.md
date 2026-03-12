@@ -16,6 +16,7 @@ MQTT → Event ingestion → Neo4j Event Knowledge Graph
 ## Weekly Progress
 
 - [Week 2 Progress](progress/week2.md)
+- [Week 3 Progress](progress/week3.md)
 
 ## Future Work
 
