@@ -98,7 +98,7 @@ Example event:
 
 ```json
 {
-  "time": 1,
+  "timestamp": 1,
   "station_id": "S1",
   "part_id": "P1",
   "part_type": "part",
