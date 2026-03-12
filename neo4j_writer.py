@@ -1,10 +1,12 @@
 from neo4j import GraphDatabase
 import uuid
 import json
+import datetime
 
-with open("config.json", encoding="utf-8") as f:
-    _config = json.load(f)
+import common
 
+# neo4j_writer - write events to graph DB, config from config.json
+_config = common.load_json("config.json")
 _neo4j_cfg = _config["neo4j"]
 NEO4J_URI = _neo4j_cfg["uri"]
 NEO4J_USER = _neo4j_cfg["username"]
@@ -15,24 +17,34 @@ driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 _last_event_per_part: dict[str, str] = {}
 
 
-def write_event_to_graph(event: dict):
-    """
-    Write one event into the Neo4j knowledge graph.
+def _to_neo4j_format(event: dict) -> dict | None:
+    """Convert physical event (time/component_id) to neo4j format (timestamp/station_id)."""
+    time_str = event.get("time")
+    if not time_str:
+        return None
+    ts = datetime.datetime.fromisoformat(time_str).timestamp()
+    return {
+        "timestamp": ts,
+        "station_id": event.get("component_id", ""),
+        "part_id": event.get("part_id", ""),
+        "part_type": event.get("part_type", "part"),
+        "activity": event.get("activity", ""),
+    }
 
-    Required fields in event:
-        timestamp        - timestamp (float or int)
-        station_id  - e.g. "S1"
-        part_id     - e.g. "P1"
-        part_type   - e.g. "part"
-        activity    - e.g. "START", "PROCESS", "END"
-    """
+
+def write_event_to_graph(event: dict):
+    """Write one event to Neo4j. Accepts physical or neo4j format."""
+    if "time" in event and "timestamp" not in event:
+        event = _to_neo4j_format(event)
+        if event is None:
+            return
     event_id = str(uuid.uuid4())
     part_id = event["part_id"]
 
     with driver.session() as session:
         session.execute_write(_create_event_tx, event_id, event)
 
-        # DF: only connect events of the SAME part
+        # DF edge: same part's consecutive events
         previous_id = _last_event_per_part.get(part_id)
         if previous_id is not None:
             session.execute_write(_create_df_tx, previous_id, event_id)
@@ -77,5 +89,5 @@ def _create_df_tx(tx, previous_id, current_id):
 
 
 def close():
-    """Call this when shutting down to cleanly close the Neo4j connection."""
+    """Close Neo4j connection."""
     driver.close()
