@@ -39,9 +39,3 @@ event_buffer (out-of-order handling)
 
 - [Week 2 Progress](progress/week2.md)
 - [Week 3 Progress](progress/week3.md)
-
-## Future Work
-
-- Connect to LEGO factory physical system
-- Frontend UI for KPI visualization
-- Process mining analysis
